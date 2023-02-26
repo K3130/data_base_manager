@@ -7,15 +7,19 @@ namespace dbm
 {
     namespace dbfs
     {
-        class DataBaseFileSol
+        class DataBaseFileSol : public QObject
         {
+            Q_OBJECT
         public:
             DataBaseFileSol();
             ~DataBaseFileSol();
-            void CreateFileBD(const QString & aFileName);
-            void DeleteFileBD(const QString & aFileName);
-            void CopyFileBD(const QString & aSrc, const QString & aDst);
-        private:
+            bool CreateFileBD(const QString &aFileName, const QString &aDBType);
+            bool DeleteFileBD(const QString &aFileName);
+            bool CopyFileBD(const QString &aSrcFIle, const QString &aDstFile);
+        signals:
+            void fileCreated();
+            void fileDeleted();
+            void fileCopyed();
         };
     }
 }
