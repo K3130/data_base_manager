@@ -13,7 +13,14 @@ namespace dbm
         public:
             DataBaseFileSol();
             ~DataBaseFileSol();
-            bool CreateFileBD(const QString &aFileName, const QString &aDBType);
+            bool CreateFileBD(QSqlDatabase &aDataBase,
+                              const QString &aFileName,
+                              const QString &aDBType,
+                              const QString &aHostName,
+                              quint32 aPort,
+                              const QString &aUserName,
+                              const QString &aPassWord);
+
             bool DeleteFileBD(const QString &aFileName);
             bool CopyFileBD(const QString &aSrcFIle, const QString &aDstFile);
         signals:

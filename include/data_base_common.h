@@ -3,7 +3,9 @@
 
 #include <QSqlDatabase>
 #include <QSqlError>
+#include <QSqlQuery>
 #include <QString>
+#include <QtGlobal>
 #include <QObject>
 
 #include "data_base_log_solution.h"

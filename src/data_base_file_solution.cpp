@@ -11,16 +11,28 @@ dbm::dbfs::DataBaseFileSol::~DataBaseFileSol()
 
 }
 
-bool dbm::dbfs::DataBaseFileSol::CreateFileBD(const QString &aFileName, const QString &aDBType)
+bool dbm::dbfs::DataBaseFileSol::CreateFileBD(QSqlDatabase &aDataBase,
+                                              const QString &aFileName,
+                                              const QString &aDBType,
+                                              const QString &aHostName,
+                                              quint32 aPort,
+                                              const QString &aUserName,
+                                              const QString &aPassword)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase(aDBType);
-    db.setDatabaseName(aFileName);
-    if( !db.open() )
+    aDataBase = QSqlDatabase::addDatabase(aDBType, "...");
+    aDataBase.setDatabaseName(aFileName);
+    aDataBase.setHostName(aHostName);
+    aDataBase.setPort(aPort);
+    aDataBase.setUserName(aUserName);
+    aDataBase.setPassword(aPassword);
+    if( !aDataBase.open() )
     {
-        qWarning(dbm::dbls::logWarning()) << db.lastError().text();
+        qWarning(dbm::dbls::logWarning()) << aDataBase.lastError().text();
         return false;
     }
-    db.close();
+    aDataBase = QSqlDatabase();
+    aDataBase.close();
+    QSqlDatabase::removeDatabase(aFileName);
     qDebug(dbm::dbls::logDebug()) << "File: " << aFileName << " Created!" << Qt::endl;
     emit fileCreated();
     return true;
