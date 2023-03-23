@@ -12,6 +12,11 @@ namespace dbm
         void messageHandler(QtMsgType aType, const QMessageLogContext &aContext, const QString &aMsg)
         {
             QFile logFile(QDir::toNativeSeparators(QDir::currentPath() + "/DB_log.txt"));
+            //Remove log file if size > 2,5 mb
+            if (logFile.size() > 2500000)
+            {
+                logFile.remove();
+            }
             logFile.open(QFile::Append | QFile::Text);
             QTextStream out(&logFile);
             out << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz ");

@@ -9,7 +9,7 @@ namespace dbm
     {
         enum class TYPE_FIELD
         {
-            INT,
+            INTEGER,
             DECIMAL,
             TINYINT,
             BOOL,
@@ -24,7 +24,7 @@ namespace dbm
             LARGEBLOB
         };
         static const char *T_F[] =
-        { "INT", "DECIMAL", "TINYINT", "BOOL" , "FLOAT", "TEXT", "VARCHAR(255)", "VARCHAR(30)", "DATE", "TIME", "DATETIME", "BLOB", "LARGEBLOB" };
+        { "INTEGER", "DECIMAL", "TINYINT", "BOOL" , "FLOAT", "TEXT", "VARCHAR(255)", "VARCHAR(30)", "DATE", "TIME", "DATETIME", "BLOB", "LARGEBLOB" };
 
         enum class ATTRIBUTES_CONSTRAINTS
         {
@@ -33,10 +33,11 @@ namespace dbm
             NOT_NULL,
             DEFAULT,
             AUTO_INCREMENT,
+            PRIMARY_KEY_AUTOINCREMENT,
             UNIQUE
         };
         static const char *A_C[] =
-        { "", "PRIMARY KEY", "NOT NULL", "DEFAULT", "AUTO_INCREMENT", "UNIQUE" };
+        { "", "PRIMARY KEY", "NOT NULL", "DEFAULT", "AUTO_INCREMENT", "PRIMARY KEY AUTOINCREMENT", "UNIQUE" };
 
 
 
@@ -64,12 +65,21 @@ namespace dbm
                               const QString &aPassword);
 
             bool CloseDataBase(QSqlDatabase &aDataBase, const QString &aFileName);
+
             bool CreateTable(QSqlDatabase &aDataBase,
                              const QString &aTableName,
-                             QVector<ColumnSettings> &aColumns);
-            bool DeleteTable();
-            bool CreateRow();
-            bool DeleteRow();
+                             const QVector<ColumnSettings> &aColumns);
+
+            bool DeleteTable(QSqlDatabase &aDataBase, const QString &aTableName);
+
+            bool InsertRow(QSqlDatabase &aDataBase,
+                           const QString &aTableName,
+                           const QVector<QString> &aColumns,
+                           const QVector<QVariant> &aValues);
+
+            bool DeleteRowById(QSqlDatabase &aDataBase,
+                               const QString &aTableName,
+                               quint32 aID);
         signals:
             void dataBaseOpened();
             void dataBaseClosed();
